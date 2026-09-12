@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TEORI ASAM DAN BASA | Interactive Presentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Manrope', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            cyan: '#00f2fe',
+                            blue: '#4facfe',
+                            emerald: '#10b981',
+                            violet: '#8b5cf6',
+                            dark: '#0f172a',
+                            light: '#f0f9ff'
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base Styles & Background */
+        body {
+            transition: background-color 0.5s ease, color 0.5s ease;
+            overflow: hidden;
+            background-color: theme('colors.brand.light');
+            color: #1e293b;
+        }
+        .dark body {
+            background-color: theme('colors.brand.dark');
+            color: #f8fafc;
+        }
+
+        /* Gradient Backgrounds */
+        .bg-gradient-light {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        }
+        .dark .bg-gradient-dark {
+            background: radial-gradient(circle at top right, #1e1b4b, #0f172a, #020617);
+        }
+
+        /* Glassmorphism & Neon Effects */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            transition: all 0.3s ease;
+        }
+        .dark .glass-panel {
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 242, 254, 0.1);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.9), rgba(255,255,255,0.6));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .dark .glass-card {
+            background: linear-gradient(145deg, rgba(30,41,59,0.6), rgba(15,23,42,0.8));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+        }
+        .glass-card:hover {
+            transform: translateY(-5px);
+        }
+        .dark .glass-card:hover {
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 242, 254, 0.3);
+            border-color: rgba(0, 242, 254, 0.4);
+        }
+
+        .text-glow { text-shadow: 0 0 10px rgba(0, 242, 254, 0.5); }
+        .dark .text-glow { text-shadow: 0 0 15px rgba(0, 242, 254, 0.8); }
+
+        .slide-title-wrapper { margin-bottom: 2.5rem; text-align: center; }
+        .slide-title {
+            font-family: 'Manrope', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        @media (min-width: 768px) { .slide-title { font-size: 2.5rem; } }
+
+        .chem-equation {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            font-family: monospace;
+            font-size: 1.25rem;
+            text-align: center;
+        }
+        .dark .chem-equation {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .slide-container { position: relative; width: 100vw; height: 100vh; overflow: hidden; z-index: 10; }
+        .slide {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            transform: scale(0.95);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 5rem 1.5rem 6rem 1.5rem;
+            z-index: 10;
+        }
+        .slide.active { opacity: 1; visibility: visible; transform: scale(1); z-index: 20; }
+        .slide.prev { transform: scale(1.05); }
+
+        #bg-particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -10; pointer-events: none; }
+        #nav-menu { transform: translateX(-100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        #nav-menu.open { transform: translateX(0); }
+
+        .watermark {
+            position: fixed; top: 15px; right: 20px; font-size: 0.75rem;
+            color: #64748b; font-weight: 600; opacity: 0.7; z-index: 100; pointer-events: none;
+        }
+        .dark .watermark { color: #94a3b8; }
+
+        input[type=range].ph-slider { -webkit-appearance: none; width: 100%; background: transparent; }
+        input[type=range].ph-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; height: 24px; width: 24px; border-radius: 50%;
+            background: #ffffff; cursor: pointer; margin-top: -10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3); border: 2px solid #00f2fe;
+        }
+        input[type=range].ph-slider::-webkit-slider-runnable-track {
+            width: 100%; height: 6px; cursor: pointer;
+            background: linear-gradient(to right, #ef4444, #10b981, #8b5cf6); border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="antialiased bg-gradient-light dark:bg-gradient-dark selection:bg-brand-cyan/30">
+
+    <canvas id="bg-particles"></canvas>
+
+    <header class="fixed top-0 left-0 w-full z-50 px-6 py-4 flex justify-between items-center pointer-events-none">
+        <div class="pointer-events-auto flex items-center gap-4">
+            <button id="btn-menu" class="w-10 h-10 rounded-lg glass-panel flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 transition text-gray-700 dark:text-gray-300">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <div class="pointer-events-auto flex gap-3">
+            <button id="btn-theme" class="w-10 h-10 rounded-lg glass-panel flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 transition text-yellow-500 dark:text-blue-300" title="Toggle Theme">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button id="btn-sound" class="w-10 h-10 rounded-lg glass-panel flex items-center justify-center hover:bg-black/5 dark:hover:bg-white/5 transition text-gray-700 dark:text-gray-300" title="Mute/Unmute">
+                <i class="fas fa-volume-up"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="watermark">© Rafli Hutauruk | 4243131099</div>
+
+    <div id="nav-overlay" class="fixed inset-0 bg-black/40 dark:bg-black/60 z-40 hidden backdrop-blur-sm transition-opacity"></div>
+    <nav id="nav-menu" class="fixed top-0 left-0 h-full w-72 bg-white/90 dark:bg-slate-900/95 backdrop-blur-md border-r border-gray-200 dark:border-white/10 z-50 p-6 flex flex-col shadow-2xl overflow-y-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="font-heading font-bold text-xl text-gray-800 dark:text-white">Menu Materi</h2>
+            <button id="btn-close-menu" class="text-xl text-gray-500 hover:text-gray-800 dark:hover:text-white transition"><i class="fas fa-times"></i></button>
+        </div>
+        <ul class="flex flex-col gap-2 font-medium text-sm text-gray-600 dark:text-gray-300" id="menu-list">
+            <!-- Disisipkan via JS -->
+        </ul>
+        <div class="mt-auto pt-6 border-t border-gray-200 dark:border-white/10 text-xs text-center text-gray-500">
+            <p>Dibuat oleh</p>
+            <p class="font-bold text-brand-blue dark:text-brand-cyan mt-1">Rafli Hutauruk</p>
+            <p>4243131099</p>
+            <p>Pendidikan Kimia</p>
+        </div>
+    </nav>
+
+    <div class="fixed bottom-0 left-0 w-full z-40 glass-panel border-b-0 border-x-0 pb-4 pt-3 px-4 flex flex-col items-center">
+        <div class="w-full max-w-4xl h-1.5 bg-gray-200 dark:bg-white/10 rounded-full mb-3 overflow-hidden shadow-inner">
+            <div id="progress-bar" class="h-full bg-gradient-to-r from-brand-blue to-brand-cyan w-0 transition-all duration-300 shadow-[0_0_10px_#00f2fe]"></div>
+        </div>
+        <div class="flex justify-between items-center w-full max-w-4xl">
+            <button id="btn-prev" class="px-5 py-2 rounded-lg bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 transition flex items-center gap-2 border border-gray-300 dark:border-white/10 disabled:opacity-30 disabled:cursor-not-allowed text-sm font-medium">
+                <i class="fas fa-arrow-left"></i> <span class="hidden sm:inline">Sebelumnya</span>
+            </button>
+            <div class="flex flex-col items-center">
+                <button id="btn-home" class="w-10 h-10 rounded-full hover:bg-gray-100 dark:hover:bg-white/5 transition flex items-center justify-center text-gray-500 dark:text-gray-400">
+                    <i class="fas fa-home"></i>
+                </button>
+                <span id="slide-indicator" class="text-xs font-bold mt-1 text-gray-600 dark:text-gray-400 tracking-widest">01 / 14</span>
+            </div>
+            <button id="btn-next" class="px-5 py-2 rounded-lg bg-gradient-to-r from-brand-blue to-brand-cyan text-white hover:shadow-[0_0_15px_rgba(0,242,254,0.6)] transition flex items-center gap-2 text-sm font-bold">
+                <span class="hidden sm:inline">Berikutnya</span> <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <main class="slide-container" id="slides-wrapper">
+
+        <!-- SLIDE 1: COVER -->
+        <section class="slide" data-title="Cover">
+            <div class="text-center w-full max-w-4xl relative z-10">
+                <div class="animate-pulse-slow mb-6 inline-block">
+                    <i class="fas fa-atom text-6xl md:text-8xl text-brand-blue dark:text-brand-cyan drop-shadow-[0_0_15px_rgba(0,242,254,0.5)]"></i>
+                </div>
+                <h3 class="text-xs md:text-sm font-bold tracking-[0.2em] text-gray-500 dark:text-brand-cyan mb-2 uppercase">Interactive Presentation</h3>
+                <h1 class="text-4xl md:text-6xl font-heading font-extrabold mb-4 leading-tight text-gray-900 dark:text-white text-glow">
+                    TEORI ASAM DAN BASA
+                </h1>
+                <p class="text-lg md:text-2xl text-gray-600 dark:text-gray-300 mb-8 font-light italic">
+                    "Dari Arrhenius hingga Lewis"
+                </p>
+                
+                <div class="flex justify-center gap-8 mb-10 text-3xl md:text-4xl text-gray-400 dark:text-gray-500">
+                    <div class="relative group"><i class="fas fa-flask text-brand-blue group-hover:text-brand-cyan transition"></i></div>
+                    <div class="relative group"><i class="fas fa-vial text-brand-emerald group-hover:text-green-400 transition"></i></div>
+                    <div class="relative group"><i class="fas fa-tint text-brand-violet group-hover:text-purple-400 transition"></i></div>
+                </div>
+
+                <div class="glass-card inline-block px-8 py-4 text-left mb-10 text-gray-800 dark:text-white">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-1 uppercase tracking-wider">Dibuat oleh</p>
+                    <p class="font-bold text-lg">Rafli Hutauruk</p>
+                    <p class="font-mono text-sm text-brand-blue dark:text-brand-cyan mt-1">NIM 4243131099</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Pendidikan Kimia</p>
+                </div>
+                <br>
+                <button class="nav-next-btn px-8 py-4 rounded-full bg-gradient-to-r from-brand-blue to-brand-cyan text-white font-bold text-lg tracking-wide hover:scale-105 hover:shadow-[0_0_20px_rgba(0,242,254,0.6)] transition-all flex items-center gap-3 mx-auto">
+                    MULAI PEMBELAJARAN <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SLIDE 2: PERTANYAAN PEMBUKA -->
+        <section class="slide" data-title="Asam vs Basa">
+            <div class="slide-title-wrapper">
+                <h2 class="slide-title">Apa yang membedakan Asam dan Basa?</h2>
+            </div>
+            
+            <div class="flex flex-col md:flex-row gap-6 w-full max-w-4xl relative z-10">
+                <!-- Card Asam -->
+                <div class="glass-card flex-1 p-8 cursor-pointer group border-t-4 border-t-brand-blue dark:border-t-brand-cyan" onclick="playClick(); showStaticParticles(this, 'H⁺', '#00f2fe')">
+                    <div class="text-5xl mb-4 text-brand-blue dark:text-brand-cyan drop-shadow-md"><i class="fas fa-flask"></i></div>
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">ASAM</h3>
+                    <ul class="text-left space-y-3 text-sm text-gray-700 dark:text-gray-300">
+                        <li class="flex items-start gap-3"><i class="fas fa-check-circle text-brand-blue dark:text-brand-cyan mt-0.5"></i> Menghasilkan/meningkatkan ion <strong>H⁺</strong></li>
+                        <li class="flex items-start gap-3"><i class="fas fa-check-circle text-brand-blue dark:text-brand-cyan mt-0.5"></i> pH < 7</li>
+                        <li class="flex items-start gap-3"><i class="fas fa-check-circle text-brand-blue dark:text-brand-cyan mt-0.5"></i> Contoh: HCl (Asam Klorida)</li>
+                    </ul>
+                    <div class="mt-6 text-xs text-center text-gray-400 italic opacity-0 group-hover:opacity-100 transition">Klik untuk melihat interaksi H⁺</div>
+                </div>
+
+                <!-- Card Basa -->
+                <div class="glass-card flex-1 p-8 cursor-pointer group border-t-4 border-t-brand-emerald" onclick="playClick(); showStaticParticles(this, 'OH⁻', '#10b981')">
+                    <div class="text-5xl mb-4 text-brand-emerald drop-shadow-md"><i class="fas fa-soap"></i></div>
+                    <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">BASA</h3>
+                    <ul class="text-left space-y-3 text-sm text-gray-700 dark:text-gray-300">
+                        <li class="flex items-start gap-3"><i class="fas fa-check-circle text-brand-emerald mt-0.5"></i> Menghasilkan/meningkatkan ion <strong>OH⁻</strong></li>
+                        <li class="flex items-start gap-3"><i class="fas fa-check-circle text-brand-emerald mt-0.5"></i> pH > 7</li>
+                        <li class="flex items-start gap-3"><i class="fas fa-check-circle text-brand-emerald mt-0.5"></i> Contoh: NaOH (Natrium Hidroksida)</li>
+                    </ul>
+                    <div class="mt-6 text-xs text-center text-gray-400 italic opacity-0 group-hover:opacity-100 transition">Klik untuk melihat interaksi OH⁻</div>
+                </div>
+            </div>
+
+            <div class="mt-12 text-center relative z-10">
+                <p class="text-xl mb-6 text-gray-800 dark:text-gray-200 font-medium bg-white/50 dark:bg-black/50 p-4 rounded-xl backdrop-blur-sm border border-gray-200 dark:border-white/10 shadow-lg">
+                    "Mengapa suatu zat disebut asam atau basa?"
+                </p>
+                <button class="nav-next-btn px-6 py-3 rounded-full bg-gray-800 dark:bg-white text-white dark:text-gray-900 hover:shadow-lg transition-all text-sm font-bold uppercase tracking-wider">
+                    Lihat Teorinya <i class="fas fa-arrow-down ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- SLIDE 3: TIMELINE -->
+        <section class="slide" data-title="Perkembangan Teori">
+            <div class="slide-title-wrapper">
+                <h2 class="slide-title">Mengapa Ada 3 Teori?</h2>
+            </div>
+            <p class="text-center mb-10 max-w-2xl text-gray-700 dark:text-gray-300 text-sm md:text-base bg-white/50 dark:bg-black/30 p-4 rounded-lg backdrop-blur border border-gray-200 dark:border-white/10 shadow-sm">
+                Perkembangan teori terjadi karena ilmuwan ingin menjelaskan perilaku asam-basa pada sistem reaksi yang semakin luas.
+            </p>
+            
+            <div class="flex flex-col md:flex-row justify-center items-center gap-6 md:gap-10 w-full max-w-4xl relative z-10">
+                <!-- Arrhenius -->
+                <div class="glass-card p-6 w-full md:w-1/3 text-center cursor-pointer relative group overflow-hidden" onclick="playClick(); toggleInfo('arr')">
+                    <div class="absolute inset-0 bg-gradient-to-b from-brand-cyan/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="w-12 h-12 rounded-full bg-brand-cyan/20 text-brand-cyan flex items-center justify-center text-xl mx-auto mb-4"><i class="fas fa-water"></i></div>
+                    <h3 class="font-bold text-xl mb-1 text-gray-800 dark:text-white">Arrhenius</h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-4 font-mono bg-gray-100 dark:bg-white/5 inline-block px-2 py-1 rounded">1884</p>
+                    <div id="info-arr" class="text-sm text-gray-700 dark:text-gray-200 hidden-info bg-gray-50 dark:bg-black/50 p-3 rounded-lg border border-gray-200 dark:border-white/10 shadow-inner">
+                        Fokus pada pembentukan ion <strong class="text-brand-blue dark:text-brand-cyan">H⁺</strong> & <strong class="text-brand-emerald">OH⁻</strong> di air.
+                    </div>
+                    <div class="mt-2 text-brand-cyan text-xl down-arrow animate-bounce"><i class="fas fa-angle-down"></i></div>
+                </div>
+
+                <!-- Bronsted -->
+                <div class="glass-card p-6 w-full md:w-1/3 text-center cursor-pointer relative group overflow-hidden" onclick="playClick(); toggleInfo('bl')">
+                    <div class="absolute inset-0 bg-gradient-to-b from-blue-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-500 flex items-center justify-center text-xl mx-auto mb-4"><i class="fas fa-exchange-alt"></i></div>
+                    <h3 class="font-bold text-xl mb-1 text-gray-800 dark:text-white">Brønsted-Lowry</h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-4 font-mono bg-gray-100 dark:bg-white/5 inline-block px-2 py-1 rounded">1923</p>
+                    <div id="info-bl" class="text-sm text-gray-700 dark:text-gray-200 hidden-info bg-gray-50 dark:bg-black/50 p-3 rounded-lg border border-gray-200 dark:border-white/10 shadow-inner">
+                        Fokus pada transfer <strong class="text-blue-600 dark:text-blue-400">Proton (H⁺)</strong> antar spesi.
+                    </div>
+                    <div class="mt-2 text-blue-500 text-xl down-arrow animate-bounce"><i class="fas fa-angle-down"></i></div>
+                </div>
+
+                <!-- Lewis -->
+                <div class="glass-card p-6 w-full md:w-1/3 text-center cursor-pointer relative group overflow-hidden" onclick="playClick(); toggleInfo('lew')">
+                    <div class="absolute inset-0 bg-gradient-to-b from-brand-violet/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    <div class="w-12 h-12 rounded-full bg-brand-violet/20 text-brand-violet flex items-center justify-center text-xl mx-auto mb-4"><i class="fas fa-atom"></i></div>
+                    <h3 class="font-bold text-xl mb-1 text-gray-800 dark:text-white">Lewis</h3>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-4 font-mono bg-gray-100 dark:bg-white/5 inline-block px-2 py-1 rounded">1923</p>
+                    <div id="info-lew" class="text-sm text-gray-700 dark:text-gray-200 hidden-info bg-gray-50 dark:bg-black/50 p-3 rounded-lg border border-gray-200 dark:border-white/10 shadow-inner">
+                        Fokus pada transfer <strong class="text-brand-violet">Pasangan Elektron</strong>.
+                    </div>
+                    <div class="mt-2 text-brand-violet text-xl down-arrow animate-bounce"><i class="fas fa-angle-down"></i></div>
+                </div>
+            </div>
+            <style>
+                .hidden-info { display: none; opacity: 0; transform: scale(0.9); transition: all 0.3s ease; }
+                .hidden-info.active { display: block; opacity: 1; transform: scale(1); animation: popIn 0.3s ease forwards; }
+                @keyframes popIn { 0%{opacity:0; transform:scale(0.8)} 100%{opacity:1; transform:scale(1)} }
+                .down-arrow { display: block; }
+                .down-arrow.hidden { display: none; }
+            </style>
+            <script>
+                function toggleInfo(id) {
+                    const info = document.getElementById('info-' + id);
+                    const arrow = info.nextElementSibling;
+                    const isActive = info.classList.contains('active');
+                    
+                    document.querySelectorAll('.hidden-info').forEach(el => el.classList.remove('active'));
+                    document.querySelectorAll('.down-arrow').forEach(el => el.classList.remove('hidden'));
+                    
+                    if(!isActive) {
+                        info.classList.add('active');
+                        arrow.classList.add('hidden');
+                    }
+                }
+            </script>
+        </section>
+
+        <!-- SLIDE 4: ARRHENIUS -->
+        <section class="slide" data-title="Teori Arrhenius">
+            <div class="slide-title-wrapper">
+                <h2 class="slide-title">Teori Asam-Basa Arrhenius</h2>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-6 w-full max-w-5xl relative z-10">
+                <!-- Panel Asam -->
+                <div class="glass-card flex-1 p-8">
+                    <div class="flex items-center gap-4 mb-4">
+                        <span class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-cyan-400 text-white flex items-center justify-center font-bold text-xl shadow-lg">A</span>
+                        <h3 class="text-2xl font-bold text-gray-800 dark:text-white">ASAM</h3>
+                    </div>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 mb-6 bg-white/50 dark:bg-black/30 p-3 rounded backdrop-blur">Zat yang meningkatkan konsentrasi <strong class="text-brand-blue dark:text-brand-cyan text-lg">H⁺</strong> dalam larutan air.</p>
+                    <div class="chem-equation">
+                        <span class="text-gray-800 dark:text-white font-semibold">HCl <sub>(aq)</sub></span> 
+                        <span class="mx-3 text-gray-500">→</span> 
+                        <span class="text-gray-800 dark:text-white font-semibold"><span class="text-brand-blue dark:text-brand-cyan font-bold transition-all duration-700 inline-block drop-shadow-md text-2xl" id="arr-h">H⁺</span> <sub>(aq)</sub> + Cl⁻ <sub>(aq)</sub></span>
+                    </div>
+                </div>
+
+                <!-- Panel Basa -->
+                <div class="glass-card flex-1 p-8">
+                    <div class="flex items-center gap-4 mb-4">
+                        <span class="w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 text-white flex items-center justify-center font-bold text-xl shadow-lg">B</span>
+                        <h3 class="text-2xl font-bold text-gray-800 dark:text-white">BASA</h3>
+                    </div>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 mb-6 bg-white/50 dark:bg-black/30 p-3 rounded backdrop-blur">Zat yang meningkatkan konsentrasi <strong class="text-brand-emerald text-lg">OH⁻</strong> dalam larutan air.</p>
+                    <div class="chem-equation">
+                        <span class="text-gray-800 dark:text-white font-semibold">NaOH <sub>(aq)</sub></span> 
+                        <span class="mx-3 text-gray-500">→</span> 
+                        <span class="text-gray-800 dark:text-white font-semibold">Na⁺ <sub>(aq)</sub> + <span class="text-brand-emerald font-bold transition-all duration-700 inline-block drop-shadow-md text-2xl" id="arr-oh">OH⁻</span> <sub>(aq)</sub></span>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="animateArrhenius()" class="mt-10 px-8 py-3 rounded-full bg-gray-800 dark:bg-white/10 text-white dark:text-white hover:bg-gray-700 dark:hover:bg-white/20 transition-all text-sm font-bold tracking-wider shadow-lg flex items-center gap-2 relative z-10 border border-transparent dark:border-white/20">
+                <i class="fas fa-play text-brand-cyan"></i> REAKSI IONISASI
+            </button>
+            <script>
+                function animateArrhenius() {
+                    playSuccess();
+                    const h = document.getElementById('arr-h');
+                    const oh = document.getElementById('arr-oh');
+                    
+                    h.style.transform = 'scale(1.5) translateY(-5px)';
+                    h.style.textShadow = '0 0 20px rgba(0,242,254,1)';
+                    oh.style.transform = 'scale(1.5) translateY(-5px)';
+                    oh.style.textShadow = '0 0 20px rgba(16,185,129,1)';
+
+                    setTimeout(() => {
+                        h.style.transform = 'scale(1) translateY(0)';
+                        h.style.textShadow = '0 0 10px rgba(0,242,254,0.5)';
+                        oh.style.transform = 'scale(1) translateY(0)';
+                        oh.style.textShadow = '0 0 10px rgba(16,185,129,0.5)';
+                    }, 1500);
+                }
+            </script>
+        </section>
+
+        <!-- SLIDE 5: KETERBATASAN ARRHENIUS -->
+        <section class="slide" data-title="Kelebihan & Keterbatasan">
+            <div class="slide-title-wrapper">
+                <h2 class="slide-title">Evaluasi Arrhenius</h2>
+            </div>
+            
+            <div class="flex flex-col md:flex-row gap-8 w-full max-w-4xl relative z-10">
+                <!-- Kelebihan -->
+                <div class="glass-card flex-1 p-8 border-t-4 border-t-brand-emerald relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 text-8xl text-brand-emerald opacity-10"><i class="fas fa-check-circle"></i></div>
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-full bg-brand-emerald/20 text-brand-emerald flex items-center justify-center text-xl"><i class="fas fa-check"></i></div>
+                        <h3 class="text-2xl font-bold text-gray-800 dark:text-white">KELEBIHAN</h3>
+                    </div>
+                    <ul class="space-y-4 text-sm text-gray-700 dark:text-gray-300 relative z-10">
+                        <li class="flex items-start gap-3 bg-white/40 dark:bg-black/30 p-3 rounded-lg"><i class="fas fa-plus text-brand-emerald mt-1"></i> <span>Sangat <strong>sederhana</strong> dan mudah digunakan.</span></li>
+                        <li class="flex items-start gap-3 bg-white/40 dark:bg-black/30 p-3 rounded-lg"><i class="fas fa-plus text-brand-emerald mt-1"></i> <span>Sempurna untuk menjelaskan reaksi di dalam pelarut air.</span></li>
+                        <li class="flex items-start gap-3 bg-white/40 dark:bg-black/30 p-3 rounded-lg"><i class="fas fa-plus text-brand-emerald mt-1"></i> <span>Mampu menjelaskan pembentukan ion H⁺ dan OH⁻ dengan jelas.</span></li>
+                    </ul>
+                </div>
+
+                <!-- Keterbatasan -->
+                <div class="glass-card flex-1 p-8 border-t-4 border-t-amber-500 relative overflow-hidden">
+                    <div class="absolute -right-4 -top-4 text-8xl text-amber-500 opacity-10"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-10 h-10 rounded-full bg-amber-500/20 text-amber-500 flex items-center justify-center text-xl"><i class="fas fa-exclamation-triangle"></i></div>
+                        <h3 class="text-2xl font-bold text-gray-800 dark:text-white">KETERBATASAN</h3>
+                    </div>
+                    <ul class="space-y-4 text-sm text-gray-700 dark:text-gray-300 relative z-10">
+                        <li class="flex items-start gap-3 bg-white/40 dark:bg-black/30 p-3 rounded-lg"><i class="fas fa-minus text-amber-500 mt-1"></i> <span>Terbatas <strong class="text-amber-600 dark:text-amber-400">hanya pada larutan berair (pelarut air)</strong>.</span></li>
+                        <li class="flex items-start gap-3 bg-white/40 dark:bg-black/30 p-3 rounded-lg"><i class="fas fa-minus text-amber-500 mt-1"></i> <span>Tidak menjelaskan semua jenis reaksi asam-basa (misal fasa gas).</span></li>
+                        <li class="flex items-start gap-3 bg-white/40 dark:bg-black/30 p-3 rounded-lg"><i class="fas fa-minus text-amber-500 mt-1"></i> <span>Tidak mencakup basa yang tidak menghasilkan OH⁻ secara langsung (misal: NH₃).</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 6: BRONSTED-LOWRY -->
+        <section class="slide" data-title="Teori Brønsted-Lowry">
+            <div class="slide-title-wrapper">
+                <h2 class="slide-title">Teori Brønsted-Lowry</h2>
+            </div>
+
+            <div class="glass-card w-full max-w-4xl p-10 text-center relative z-10">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                    <div class="bg-gradient-to-br from-blue-50 dark:from-slate-800 to-white dark:to-slate-900 p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-lg transform hover:scale-105 transition">
+                        <div class="text-sm text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wider font-bold">ASAM</div>
+                        <div class="text-2xl font-bold text-brand-blue dark:text-brand-cyan text-glow">DONOR PROTON (H⁺)</div>
+                    </div>
+                    <div class="bg-gradient-to-br from-green-50 dark:from-slate-800 to-white dark:to-slate-900 p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-lg transform hover:scale-105 transition">
+                        <div class="text-sm text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wider font-bold">BASA</div>
+                        <div class="text-2xl font-bold text-brand-emerald drop-shadow-[0_0_10px_rgba(16,185,129,0.5)]">AKSEPTOR PROTON (H⁺)</div>
+                    </div>
+                </div>
+
+                <!-- Interactive Reaction -->
+                <div class="chem-equation text-2xl md:text-4xl flex items-center justify-center gap-6 relative overflow-hidden py-10 bg-white/60 dark:bg-black/40">
+                    <div id="bl-hcl" class="relative group cursor-pointer">
+                        <span class="text-gray-800 dark:text-white font-semibold"><span id="bl-h" class="text-brand-blue dark:text-brand-cyan font-bold inline-block relative z-10">H</span>Cl</span>
+                        <div class="text-xs font-sans text-white bg-brand-blue dark:bg-brand-cyan absolute -bottom-8 left-1/2 transform -translate-x-1/2 px-2 py-1 rounded shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition">Donor H⁺ (Asam)</div>
+                    </div>
+                    <span class="text-gray-400 font-light">+</span>
+                    <div id="bl-h2o" class="relative group cursor-pointer">
+                        <span class="text-gray-800 dark:text-white font-semibold">H₂O</span>
+                        <div class="text-xs font-sans text-white bg-brand-emerald absolute -bottom-8 left-1/2 transform -translate-x-1/2 px-2 py-1 rounded shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition">Akseptor H⁺ (Basa)</div>
+                    </div>
+                    <span class="mx-4 text-gray-400 font-light">→</span>
+                    <div class="text-gray-800 dark:text-gray-200 font-semibold" id="bl-h3o">H₃O⁺</div>
+                    <span class="text-gray-400 font-light">+</span>
+                    <div class="text-gray-800 dark:text-gray-200 font-semibold" id="bl-cl">Cl⁻</div>
+
+                    <!-- Ghost element for animation -->
+                    <div id="ghost-proton" class="absolute text-brand-blue dark:text-brand-cyan font-bold text-3xl md:text-5xl z-50 pointer-events-none opacity-0 drop-shadow-[0_0_15px_#00f2fe]">H⁺</div>
+                </div>
+                
+                <button onclick="animateProton()" class="mt-10 px-8 py-3 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white hover:shadow-[0_0_20px_rgba(0,242,254,0.6)] transition-all text-sm font-bold uppercase tracking-wider">
+                    <i class="fas fa-exchange-alt mr-2"></i> TRANSFER PROTON
+                </button>
+            </div>
+            
+            <script>
+                function animateProton() {
+                    playTone(600, 'sine', 0.1);
+                    const hcl = document.getElementById('bl-hcl');
+                    const h2o = document.getElementById('bl-h2o');
+                    const proton = document.getElementById('bl-h');
+                    const ghost = document.getElementById('ghost-proton');
+                    const h3o = document.getElementById('bl-h3o');
+                    const cl = document.getElementById('bl-cl');
+
+                    const rectContainer = hcl.parentElement.getBoundingClientRect();
+                    const rectStart = proton.getBoundingClientRect();
+                    const rectEnd = h2o.getBoundingClientRect();
+
+                    ghost.style.left = (rectStart.left - rectContainer.left) + 'px';
+                    ghost.style.top = (rectStart.top - rectContainer.top - 5) + 'px';
+                    ghost.style.opacity = '1';
+                    ghost.style.transition = 'none'; 
+                    proton.style.opacity = '0'; 
+
+                    void ghost.offsetWidth;
+
+                    ghost.style.transition = 'all 1s cubic-bezier(0.4, 0, 0.2, 1)';
+                    ghost.style.left = (rectEnd.left - rectContainer.left + 30) + 'px';
+                    ghost.style.top = (rectEnd.top - rectContainer.top - 20) + 'px';
+                    ghost.style.transform = 'scale(1.2)';
+
+                    setTimeout(() => {
+                        playTone(800, 'sine', 0.1);
+                        ghost.style.opacity = '0';
+                        proton.style.opacity = '1'; 
+                        ghost.style.transform = 'scale(1)';
+                        
+                        // Highlight results
+                        h3o.style.color = '#10b981';
+                        h3o.style.textShadow = '0 0 10px rgba(16,185,129,0.5)';
+                        cl.style.color = '#00f2fe';
+                        cl.style.textShadow = '0 0 10px rgba(0,242,254,0.5)';
+                        
+                        setTimeout(() => {
+                            h3o.style.color = ''; h3o.style.textShadow = '';
+                            cl.style.color = ''; cl.style.textShadow = '';
+                        }, 1500);
+                        
+                    }, 1000);
+                }
+            </script>
+        </section>
+
+        <!-- SLIDE 7: PASANGAN KONJUGASI -->
+        <section class="slide" data-title="Asam-Basa Konjugasi">
+            <div class="slide-title-wrapper">
+                <h2 class="slide-title">Asam-Basa Konjugasi</h2>
+            </div>
+
+            <div class="w-full max-w-4xl relative z-10">
+                <div class="glass-card flex flex-col md:flex-row justify-between items-center p-12 text-2xl md:text-4xl font-mono relative overflow-hidden font-bold">
+                    
+                    <!-- Kiri -->
+                    <div class="flex items-center gap-8 relative z-10">
+                        <div class="text-center group cursor-pointer bg-white/40 dark:bg-black/30 p-4 rounded-xl backdrop-blur border border-transparent hover:border-brand-cyan transition" onclick="highlightPair('pair1')">
+                            <span class="block text-gray-800 dark:text-white mb-2 transition-colors duration-300 drop-shadow" id="c-hcl">HCl</span>
+                            <span class="text-xs font-sans font-bold text-gray-500 uppercase tracking-widest bg-gray-200 dark:bg-white/10 px-2 py-1 rounded">Asam</span>
+                        </div>
+                        <span class="text-gray-400 font-light">+</span>
+                        <div class="text-center group cursor-pointer bg-white/40 dark:bg-black/30 p-4 rounded-xl backdrop-blur border border-transparent hover:border-brand-emerald transition" onclick="highlightPair('pair2')">
+                            <span class="block text-gray-800 dark:text-white mb-2 transition-colors duration-300 drop-shadow" id="c-h2o2">H₂O</span>
+                            <span class="text-xs font-sans font-bold text-gray-500 uppercase tracking-widest bg-gray-200 dark:bg-white/10 px-2 py-1 rounded">Basa</span>
+                        </div>
+                    </div>
+
+                    <div class="text-gray-400 my-6 md:my-0 text-3xl">⇌</div>
+
+                    <!-- Kanan -->
+                    <div class="flex items-center gap-8 relative z-10">
+                        <div class="text-center group cursor-pointer bg-white/40 dark:bg-black/30 p-4 rounded-xl backdrop-blur border border-transparent hover:border-brand-emerald transition" onclick="highlightPair('pair2')">
+                            <span class="block text-gray-800 dark:text-white mb-2 transition-colors duration-300 drop-shadow" id="c-h3o">H₃O⁺</span>
+                            <span class="text-xs font-sans font-bold text-gray-500 uppercase tracking-widest bg-gray-200 dark:bg-white/10 px-2 py-1 rounded">Asam Konjugasi</span>
+                        </div>
+                        <span class="text-gray-400 font-light">+</span>
+                        <div class="text-center group cursor-pointer bg-white/40 dark:bg-black/30 p-4 rounded-xl backdrop-blur border border-transparent hover:border-brand-cyan transition" onclick="highlightPair('pair1')">
+                            <span class="block text-gray-800 dark:text-white mb-2 transition-colors duration-300 drop-shadow" id="c-cl">Cl⁻</span>
+                            <span class="text-xs font-sans font-bold text-gray-500 uppercase tracking-widest bg-gray-200 dark:bg-white/10 px-2 py-1 rounded">Basa Konjugasi</span>
+                        </div>
+                    </div>
+
+                    <!-- Connection Lines -->
+                    <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-50 hidden md:block z-0 drop-shadow-md" id="pair-lines">
+                        <path id="line-pair1" d="M 120 50 Q 450 -50 750 50" fill="transparent" stroke="#00f2fe" stroke-width="4" stroke-dasharray="8,8" stroke-linecap="round" opacity="0" class="transition-opacity duration-300"/>
+                        <path id="line-pair2" d="M 280 120 Q 500 200 600 120" fill="transparent" stroke="#10b981" stroke-width="4" stroke-dasharray="8,8" stroke-linecap="round" opacity="0" class="transition-opacity duration-300"/>
+                    </svg>
+                </div>
+
+                <div class="mt-8 text-center p-6 glass-card rounded-xl border border-gray-200 dark:border-white/10 shadow-lg">
+                    <p id="konjugasi-desc" class="text-lg text-gray-600 dark:text-gray-300 font-medium">
+                        <i class="fas fa-hand-pointer text-brand-blue dark:text-brand-cyan animate-bounce mr-2"></i> Klik salah satu molekul untuk melihat pasangan konjugasinya.
+                    </p>
+                </div>
+            </div>
+
+            <script>
+                function highlightPair(pair) {
+                    playClick();
+                    const line1 = document.getElementById('line-pair1');
+                    const line2 = document.getElementById('line-pair2');
+                    const desc = document.getElementById('konjugasi-desc');
+                    const isDark = document.documentElement.classList.contains('dark');
+                    const defaultColor = isDark ? '#ffffff' : '#1f2937';
+                    
+                    document.querySelectorAll('#c-hcl, #c-h2o2, #c-h3o, #c-cl').forEach(el => {
+                        el.style.color = defaultColor;
+                        el.style.textShadow = 'none';
+                        el.style.transform = 'scale(1)';
+                    });
+                    
+                    if(line1) line1.setAttribute('opacity', '0');
+                    if(line2) line2.setAttribute('opacity', '0');
+
+                    if(pair === 'pair1') {
+                        document.getElementById('c-hcl').style.color = '#00f2fe';
+                        document.getElementById('c-hcl').style.textShadow = '0 0 15px rgba(0,242,254,0.6)';
+                        document.getElementById('c-hcl').style.transform = 'scale(1.1)';
+                        document.getElementById('c-cl').style.color = '#00f2fe'; 
+                        document.getElementById('c-cl').style.textShadow = '0 0 15px rgba(0,242,254,0.6)';
+                        document.getElementById('c-cl').style.transform = 'scale(1.1)';
+                        if(line1) line1.setAttribute('opacity', '1');
+                        desc.innerHTML = "<strong class='text-brand-blue dark:text-brand-cyan text-xl'>HCl (Asam)</strong> mendonorkan H⁺ menjadi <strong class='text-brand-blue dark:text-brand-cyan text-xl'>Cl⁻ (Basa Konjugasi)</strong>";
+                    } else if (pair === 'pair2') {
+                        document.getElementById('c-h2o2').style.color = '#10b981';
+                        document.getElementById('c-h2o2').style.textShadow = '0 0 15px rgba(16,185,129,0.6)';
+                        document.getElementById('c-h2o2').style.transform = 'scale(1.1)';
+                        document.getElementById('c-h3o').style.color = '#10b981';
+                        document.getElementById('c-h3o').style.textShadow = '0 0 15px rgba(16,185,129,0.6)';
+                        document.getElementById('c-h3o').style.transform = 'scale(1.1)';
+                        if(line2) line2.setAttribute('opacity', '1');
+                        desc.innerHTML = "<strong class='text-brand-emerald text-xl'>H₂O (Basa)</strong> menerima H⁺ menjadi <strong class='text-brand-emerald text-xl'>H₃O⁺ (Asam Konjugasi)</strong>";
+                    }
+                }
+            </script>
+        </section>
+
+        <!-- SLIDE 8: LEWIS -->
+        <section class="slide" data-title="Teori Lewis">
+            <div class="slide-title-wrapper">
+                <h2 class="slide-title">Teori Asam-Basa Lewis</h2>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-6 mb-10 w-full max-w-4xl relative z-10">
+                <div class="glass-card p-6 rounded-xl flex-1 text-center border-b-4 border-b-brand-blue dark:border-b-brand-cyan bg-gradient-to-t from-blue-50/50 dark:from-slate-800/50 to-transparent">
+                    <div class="text-3xl text-brand-blue dark:text-brand-cyan mb-3"><i class="fas fa-sign-in-alt"></i></div>
+                    <h3 class="font-bold text-gray-800 dark:text-white mb-2 text-xl tracking-wide">ASAM LEWIS</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 font-medium">Akseptor (Penerima) pasangan elektron.</p>
+                </div>
+                <div class="glass-card p-6 rounded-xl flex-1 text-center border-b-4 border-b-brand-violet bg-gradient-to-t from-purple-50/50 dark:from-slate-800/50 to-transparent">
+                    <div class="text-3xl text-brand-violet mb-3"><i class="fas fa-sign-out-alt"></i></div>
+                    <h3 class="font-bold text-gray-800 dark:text-white mb-2 text-xl tracking-wide">BASA LEWIS</h3>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 font-medium">Donor (Pemberi) pasangan elektron bebas.</p>
+                </div>
+            </div>
+
+            <div class="glass-card p-10 w-full max-w-4xl text-center relative z-10">
+                <p class="mb-8 text-sm md:text-base text-gray-600 dark:text-gray-400 font-medium bg-gray-100 dark:bg-white/5 p-3 rounded-lg inline-block">Reaksi Boron Trifluorida (BF₃) dan Amonia (NH₃)</p>
+                
+                <div class="chem-equation flex justify-center items-center gap-6 md:gap-10 text-3xl md:text-4xl border-0 bg-transparent p-0 shadow-none font-bold">
+                    <!-- Asam -->
+                    <div class="flex flex-col items-center group">
+                        <span class="text-gray-800 dark:text-white drop-shadow">BF₃</span>
+                        <span class="text-xs font-sans text-gray-500 mt-2 opacity-0 group-hover:opacity-100 transition">Asam Lewis</span>
+                    </div>
+                    <span class="text-gray-400 font-light">+</span>
+                    <!-- Basa -->
+                    <div class="flex items-center group relative">
+                        <div id="electron-pair" class="text-brand-violet font-bold mx-1 transition-transform duration-1000 text-5xl drop-shadow-[0_0_10px_rgba(139,92,246,0.8)] -translate-y-1">:</div>
+                        <div class="flex flex-col items-center">
+                            <span class="text-gray-800 dark:text-white drop-shadow">NH₃</span>
+                            <span class="text-xs font-sans text-gray-500 mt-2 opacity-0 group-hover:opacity-100 transition absolute -bottom-6 w-full text-center">Basa Lewis</span>
+                        </div>
+                    </div>
+                    <span class="text-gray-400 mx-4 font-light">→</span>
+                    <!-- Hasil -->
+                    <div class="opacity-30 transition-all duration-1000 text-gray-800 dark:text-white flex flex-col items-center" id="lewis-result">
+                        <span>F₃B <span class="text-brand-violet px-1 animate-pulse">-</span> NH₃</span>
+                        <span class="text-xs font-sans text-brand-violet mt-2 bg-brand-violet/10 px-2 py-1 rounded opacity-0 transition-opacity" id="lewis-ikatan">Ikatan Kovalen Koordinasi</span>
+                    </div>
+                </div>
+
+                <button onclick="animateLewis()" class="mt-12 px-8 py-3 rounded-full bg-brand-violet text-white hover:bg-purple-600 hover:shadow-[0_0_20px_rgba(139,92,246,0.6)] transition-all text-sm font-bold uppercase tracking-wider flex items-center justify-center mx-auto gap-2">
+                    <i class="fas fa-bolt"></i> DONOR ELEKTRON
+                </button>
+            </div>
+            <script>
+                function animateLewis() {
+                    playSuccess();
+                    const ePair = document.getElementById('electron-pair');
+                    const res = document.getElementById('lewis-result');
+                    const ikatan = document.getElementById('lewis-ikatan');
+                    
+                    ePair.style.transform = window.innerWidth < 768 ? 'translateX(-40px) translateY(-4px)' : 'translateX(-80px) translateY(-4px)';
+                    ePair.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        res.style.opacity = '1';
+                        res.style.transform = 'scale(1.1)';
+                        res.style.textShadow = '0 0 15px rgba(255,255,255,0.5)';
+                        ikatan.style.opacity = '1';
+                    }, 800);
+
+                    setTimeout(() => {
+                        ePair.style.transform = 'translateX(0) translateY(-4px)';
+                        ePair.style.opacity = '1';
+                        res.style.opacity = '0.3';
+                        res.style.transform = 'scale(1)';
+                        res.style.textShadow = 'none';
+                        ikatan.style.opacity = '0';
+                    }, 4000);
+                }
+            </script>
+        </section>
+
+        <!-- SLIDE 9: PERBANDINGAN -->
+        <section class="slide" data-title="Perbandingan Teori">
+            <div class="slide-title-wrapper">
+                <h2 class="slide-title">Ringkasan 3 Teori</h2>
+            </div>
+            
+            <div class="w-full max-w-5xl glass-card overflow-hidden relative z-10 shadow-2xl border-t-4 border-t-brand-blue dark:border-t-brand-cyan">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm md:text-base border-collapse bg-white/40 dark:bg-black/20">
+                        <thead>
+                            <tr class="bg-gray-100/80 dark:bg-black/60 border-b border-gray-200 dark:border-white/10 text-gray-800 dark:text-white">
+                                <th class="p-6 font-bold uppercase tracking-wider text-sm w-1/4"><i class="fas fa-book mr-2 text-gray-400"></i> Teori</th>
+                                <th class="p-6 font-bold uppercase tracking-wider text-sm text-brand-blue dark:text-brand-cyan w-3/8"><i class="fas fa-flask mr-2"></i> Asam</th>
+                                <th class="p-6 font-bold uppercase tracking-wider text-sm text-brand-emerald w-3/8"><i class="fas fa-soap mr-2"></i> Basa</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-700 dark:text-gray-200 font-medium">
+                            <tr class="border-b border-gray-200 dark:border-white/10 hover:bg-white/60 dark:hover:bg-white/10 transition group cursor-default">
+                                <td class="p-6 font-bold text-gray-900 dark:text-white group-hover:text-brand-cyan transition">Arrhenius</td>
+                                <td class="p-6">Menghasilkan/meningkatkan <span class="text-brand-blue dark:text-brand-cyan font-extrabold text-lg bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded">H⁺</span> (dlm air)</td>
+                                <td class="p-6">Menghasilkan/meningkatkan <span class="text-brand-emerald font-extrabold text-lg bg-green-50 dark:bg-green-900/30 px-2 py-1 rounded">OH⁻</span> (dlm air)</td>
+                            </tr>
+                            <tr class="border-b border-gray-200 dark:border-white/10 hover:bg-white/60 dark:hover:bg-white/10 transition group cursor-default">
+                                <td class="p-6 font-bold text-gray-900 dark:text-white group-hover:text-brand-cyan transition">Brønsted-Lowry</td>
+                                <td class="p-6"><span class="text-brand-blue dark:text-brand-cyan font-extrabold uppercase bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded mr-1">Donor</span> Proton (H⁺)</td>
+                                <td class="p-6"><span class="text-brand-emerald font-extrabold uppercase bg-green-50 dark:bg-green-900/30 px-2 py-1 rounded mr-1">Akseptor</span> Proton (H⁺)</td>
+                            </tr>
+                            <tr class="hover:bg-white/60 dark:hover:bg-white/10 transition group cursor-default">
+                                <td class="p-6 font-bold text-gray-900 dark:text-white group-hover:text-brand-violet transition">Lewis</td>
+                                <td class="p-6"><span class="text-brand-blue dark:text-brand-cyan font-extrabold uppercase bg-blue-50 dark:bg-blue-900/30 px-2 py-1 rounded mr-1">Akseptor</span> Psgn Elektron</td>
+                                <td class="p-6"><span class="text-brand-violet font-extrabold uppercase bg-purple-50 dark:bg-purple-900/30 px-2 py-1 rounded mr-1">Donor</span> Psgn Elektron</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 10: LABORATORIUM MINI -->
+        <section class="slide" data-title="Laboratorium Mini">
+            <div class="slide-title-wrapper">
+                <h2 class="slide-title">Laboratorium Virtual</h2>
+            </div>
+            <p class="mb-6 text-sm text-gray-600 dark:text-gray-400 text-center font-medium bg-white/50 dark:bg-black/30 p-2 rounded-lg inline-block px-4 relative z-10 shadow-sm border border-gray-200 dark:border-white/10">Amati bagaimana berbagai zat terurai di dalam air.</p>
+
+            <div class="flex flex-col md:flex-row gap-6 w-full max-w-5xl h-[60vh] md:h-[50vh] relative z-10">
+                <!-- Panel Kontrol -->
+                <div class="glass-card p-6 w-full md:w-1/3 flex flex-col gap-3 shadow-xl">
+                    <h3 class="font-bold mb-4 text-gray-800 dark:text-white text-sm tracking-wider uppercase border-b border-gray-200 dark:border-white/10 pb-2 flex items-center"><i class="fas fa-list-ul mr-2 text-brand-cyan"></i> Pilih Zat</h3>
+                    
+                    <button class="lab-btn p-3 rounded-lg bg-white/80 dark:bg-black/40 hover:bg-gray-50 dark:hover:bg-white/10 transition border border-gray-200 dark:border-white/10 text-left flex justify-between items-center text-sm font-semibold shadow-sm group" data-type="strong-acid">
+                        <span class="text-gray-800 dark:text-gray-200 group-hover:text-brand-cyan transition">HCl (Asam Kuat)</span>
+                        <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                    </button>
+                    <button class="lab-btn p-3 rounded-lg bg-white/80 dark:bg-black/40 hover:bg-gray-50 dark:hover:bg-white/10 transition border border-gray-200 dark:border-white/10 text-left flex justify-between items-center text-sm font-semibold shadow-sm group" data-type="weak-acid">
+                        <span class="text-gray-800 dark:text-gray-200 group-hover:text-brand-cyan transition">CH₃COOH (Asam Lemah)</span>
+                        <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                    </button>
+                    <button class="lab-btn p-3 rounded-lg bg-white/80 dark:bg-black/40 hover:bg-gray-50 dark:hover:bg-white/10 transition border border-gray-200 dark:border-white/10 text-left flex justify-between items-center text-sm font-semibold shadow-sm group" data-type="strong-base">
+                        <span class="text-gray-800 dark:text-gray-200 group-hover:text-brand-emerald transition">NaOH (Basa Kuat)</span>
+                        <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                    </button>
+                    <button class="lab-btn p-3 rounded-lg bg-white/80 dark:bg-black/40 hover:bg-gray-50 dark:hover:bg-white/10 transition border border-gray-200 dark:border-white/10 text-left flex justify-between items-center text-sm font-semibold shadow-sm group" data-type="weak-base">
+                        <span class="text-gray-800 dark:text-gray-200 group-hover:text-brand-emerald transition">NH₃ (Basa Lemah)</span>
+                        <i class="fas fa-chevron-right text-gray-400 text-xs"></i>
+                    </button>
+
+                    <div class="mt-auto pt-4 flex gap-3">
+                        <button id="btn-lab-play" class="flex-1 bg-gradient-to-r from-blue-500 to-cyan-500 text-white py-3 rounded-lg text-sm font-bold uppercase tracking-wide shadow-lg hover:shadow-[0_0_15px_rgba(0,242,254,0.5)] transition-all">▶ Mulai</button>
+                        <button id="btn-lab-reset" class="flex-1 bg-gray-200 dark:bg-white/10 hover:bg-gray-300 dark:hover:bg-white/20 text-gray-800 dark:text-white py-3 rounded-lg text-sm font-bold uppercase tracking-wide transition-colors border border-gray-300 dark:border-transparent">↻ Reset</button>
+                    </div>
+                </div>
+
+                <!-- Canvas Beaker -->
+                <div class="glass-card flex-1 relative overflow-hidden flex flex-col items-center justify-center bg-white/60 dark:bg-black/40 shadow-xl border-4 border-white dark:border-transparent border-t-gray-200 dark:border-t-white/10 border-l-gray-200 dark:border-l-white/10">
+                    <div id="lab-status" class="absolute top-4 left-4 z-10 text-xs font-mono font-bold bg-gray-800 dark:bg-black text-white px-3 py-1 rounded shadow drop-shadow text-glow">
+                        Status: Menunggu Pilihan
+                    </div>
+                    <!-- Beaker visual shape -->
+                    <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-[80%] md:w-[60%] h-[80%] border-4 border-t-0 border-gray-300 dark:border-white/30 rounded-b-3xl bg-white/10 dark:bg-white/5 z-0 shadow-inner overflow-hidden">
+                        <div class="absolute bottom-0 w-full h-[85%] bg-blue-400/10 dark:bg-blue-500/20 border-t-2 border-blue-300/30 dark:border-blue-400/40 animate-pulse-slow"></div>
+                        <!-- Water reflection -->
+                        <div class="absolute top-10 left-2 w-4 h-[60%] bg-white/20 rounded-full blur-[2px]"></div>
+                    </div>
+                    <canvas id="lab-canvas" class="w-full h-full absolute inset-0 z-10"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 11: SKALA pH -->
+        <section class="slide" data-title="Skala pH">
+            <div class="slide-title-wrapper">
+                <h2 class="slide-title">Asam, Basa, dan pH</h2>
+            </div>
+            
+            <div class="w-full max-w-4xl glass-card p-10 md:p-14 relative overflow-hidden text-center z-10 shadow-2xl">
+                <div class="absolute inset-0 bg-gradient-to-b from-white/40 to-transparent dark:from-white/5 pointer-events-none rounded-xl"></div>
+                
+                <div class="inline-block bg-white dark:bg-black/50 p-4 px-8 rounded-2xl shadow-inner border border-gray-200 dark:border-white/10 mb-10">
+                    <h3 id="ph-title-val" class="text-5xl font-extrabold font-mono text-brand-emerald drop-shadow-md">pH 7.0</h3>
+                </div>
+                
+                <div class="flex justify-between text-xs md:text-sm font-bold mb-4 text-gray-500 dark:text-gray-400 px-3 uppercase tracking-wider">
+                    <span class="text-red-500">Asam (0)</span>
+                    <span class="text-brand-emerald">Netral (7)</span>
+                    <span class="text-brand-violet">Basa (14)</span>
+                </div>
+                
+                <div class="bg-gray-100 dark:bg-black/30 p-4 rounded-xl shadow-inner border border-gray-200 dark:border-white/5 mb-12">
+                    <input type="range" min="0" max="14" step="0.1" value="7" class="ph-slider w-full" id="ph-slider" oninput="updatePH()">
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                    <div class="bg-white/80 dark:bg-black/40 p-5 rounded-xl border border-gray-200 dark:border-white/10 shadow-md transform hover:scale-105 transition">
+                        <div class="text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider mb-3"><i class="fas fa-tint mr-1"></i> Sifat Larutan</div>
+                        <div id="ph-sifat" class="font-extrabold text-xl text-brand-emerald">Netral</div>
+                    </div>
+                    <div class="bg-white/80 dark:bg-black/40 p-5 rounded-xl border border-gray-200 dark:border-white/10 shadow-md transform hover:scale-105 transition">
+                        <div class="text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider mb-3"><i class="fas fa-flask mr-1"></i> Contoh Zat</div>
+                        <div id="ph-contoh" class="font-bold text-lg text-gray-800 dark:text-white">Air Murni</div>
+                    </div>
+                    <div class="bg-white/80 dark:bg-black/40 p-5 rounded-xl border border-gray-200 dark:border-white/10 shadow-md transform hover:scale-105 transition">
+                        <div class="text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider mb-3 bg-blue-50 dark:bg-blue-900/30 rounded inline-block px-2 py-1">[H⁺] Konsentrasi</div>
+                        <div id="ph-h-val" class="font-mono font-extrabold text-lg text-brand-blue dark:text-brand-cyan">10⁻⁷ M</div>
+                    </div>
+                    <div class="bg-white/80 dark:bg-black/40 p-5 rounded-xl border border-gray-200 dark:border-white/10 shadow-md transform hover:scale-105 transition">
+                        <div class="text-gray-500 dark:text-gray-400 text-xs font-bold uppercase tracking-wider mb-3 bg-green-50 dark:bg-green-900/30 rounded inline-block px-2 py-1">[OH⁻] Konsentrasi</div>
+                        <div id="ph-oh-val" class="font-mono font-extrabold text-lg text-brand-emerald">10⁻⁷ M</div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                function updatePH() {
+                    const val = parseFloat(document.getElementById('ph-slider').value);
+                    const titleVal = document.getElementById('ph-title-val');
+                    const sifat = document.getElementById('ph-sifat');
+                    const contoh = document.getElementById('ph-contoh');
+                    const hVal = document.getElementById('ph-h-val');
+                    const ohVal = document.getElementById('ph-oh-val');
+
+                    titleVal.innerText = `pH ${val.toFixed(1)}`;
+                    hVal.innerText = `10⁻${val.toFixed(1)} M`;
+                    ohVal.innerText = `10⁻${(14-val).toFixed(1)} M`;
+
+                    // Dynamic text shadow for neon effect in dark mode
+                    const isDark = document.documentElement.classList.contains('dark');
+                    const applyGlow = (color) => isDark ? `0 0 15px ${color}` : 'none';
+
+                    if (val < 3) {
+                        sifat.innerText = "Sangat Asam"; sifat.className = "font-extrabold text-xl text-red-500";
+                        titleVal.className = "text-5xl font-extrabold font-mono text-red-500 drop-shadow-md";
+                        titleVal.style.textShadow = applyGlow('rgba(239,68,68,0.6)');
+                        contoh.innerText = "Asam Lambung";
+                    } else if (val < 7) {
+                        sifat.innerText = "Asam"; sifat.className = "font-extrabold text-xl text-orange-500";
+                        titleVal.className = "text-5xl font-extrabold font-mono text-orange-500 drop-shadow-md";
+                        titleVal.style.textShadow = applyGlow('rgba(249,115,22,0.6)');
+                        contoh.innerText = "Jus Jeruk";
+                    } else if (val === 7 || (val > 6.8 && val < 7.2)) {
+                        sifat.innerText = "Netral"; sifat.className = "font-extrabold text-xl text-brand-emerald";
+                        titleVal.className = "text-5xl font-extrabold font-mono text-brand-emerald drop-shadow-md";
+                        titleVal.style.textShadow = applyGlow('rgba(16,185,129,0.6)');
+                        contoh.innerText = "Air Murni";
+                    } else if (val <= 11) {
+                        sifat.innerText = "Basa"; sifat.className = "font-extrabold text-xl text-blue-500";
+                        titleVal.className = "text-5xl font-extrabold font-mono text-blue-500 drop-shadow-md";
+                        titleVal.style.textShadow = applyGlow('rgba(59,130,246,0.6)');
+                        contoh.innerText = "Sabun / Deterjen";
+                    } else {
+                        sifat.innerText = "Sangat Basa"; sifat.className = "font-extrabold text-xl text-brand-violet";
+                        titleVal.className = "text-5xl font-extrabold font-mono text-brand-violet drop-shadow-md";
+                        titleVal.style.textShadow = applyGlow('rgba(139,92,246,0.6)');
+                        contoh.innerText = "Pemutih Pakaian";
+                    }
+                    
+                    if(Math.random() > 0.8 && !isMuted) playTone(800 + (val*30), 'triangle', 0.02);
+                }
+            </script>
+        </section>
+
+        <!-- SLIDE 12: KUIS -->
+        <section class="slide" data-title="Uji Pemahaman">
+            <div class="slide-title-wrapper">
+                <h2 class="slide-title">Uji Pemahaman</h2>
+            </div>
+            
+            <div id="quiz-container" class="glass-card w-full max-w-3xl p-10 relative min-h-[400px] flex flex-col justify-center z-10 shadow-2xl border-t-4 border-t-brand-blue dark:border-t-brand-cyan">
+                <!-- Start Screen -->
+                <div id="quiz-start" class="text-center">
+                    <div class="text-6xl text-brand-blue dark:text-brand-cyan mb-6 drop-shadow-md"><i class="fas fa-brain"></i></div>
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">Siap menguji pengetahuanmu?</h3>
+                    <p class="mb-10 text-base text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-white/5 inline-block px-4 py-2 rounded-lg border border-gray-200 dark:border-white/10">Terdapat 5 pertanyaan pilihan ganda terkait teori asam-basa.</p>
+                    <br>
+                    <button onclick="startQuiz()" class="px-10 py-4 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 hover:shadow-[0_0_20px_rgba(0,242,254,0.6)] text-white transition-all text-base font-bold uppercase tracking-wider transform hover:scale-105">Mulai Kuis <i class="fas fa-play ml-2"></i></button>
+                </div>
+
+                <!-- Question Screen -->
+                <div id="quiz-question" class="hidden w-full">
+                    <div class="flex justify-between items-center mb-8 text-sm font-bold text-gray-500 dark:text-gray-400 border-b-2 border-gray-200 dark:border-white/10 pb-4">
+                        <span id="q-counter" class="bg-gray-100 dark:bg-white/10 px-3 py-1 rounded">Soal 1/5</span>
+                        <span id="q-score-live" class="text-brand-blue dark:text-brand-cyan">Skor: 0</span>
+                    </div>
+                    <h3 id="q-text" class="text-xl md:text-2xl font-bold mb-8 text-gray-800 dark:text-white min-h-[80px] leading-relaxed">Pertanyaan muncul disini...</h3>
+                    
+                    <div class="grid grid-cols-1 gap-4" id="q-options">
+                        <!-- Options generated by JS -->
+                    </div>
+                </div>
+
+                <!-- Feedback Screen (Overlay) -->
+                <div id="quiz-feedback" class="absolute inset-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md flex flex-col items-center justify-center p-8 hidden rounded-xl z-20 border-2 border-transparent">
+                    <div id="fb-icon" class="text-6xl mb-6 text-brand-emerald animate-bounce"><i class="fas fa-check-circle"></i></div>
+                    <h2 id="fb-title" class="text-3xl font-extrabold mb-4">Benar!</h2>
+                    <div class="bg-gray-100 dark:bg-black/30 p-6 rounded-xl border border-gray-200 dark:border-white/10 shadow-inner mb-8 w-full max-w-lg">
+                        <p id="fb-desc" class="text-center text-base text-gray-700 dark:text-gray-300 font-medium leading-relaxed">Penjelasan singkat disini.</p>
+                    </div>
+                    <button onclick="nextQuestion()" class="px-8 py-3 rounded-full bg-gray-800 dark:bg-white text-white dark:text-gray-900 hover:shadow-lg transition-all text-sm font-bold uppercase tracking-wider">Lanjut ke Soal Berikutnya <i class="fas fa-arrow-right ml-2"></i></button>
+                </div>
+
+                <!-- End Screen -->
+                <div id="quiz-end" class="hidden text-center">
+                    <div class="text-6xl text-brand-emerald mb-4 drop-shadow-md"><i class="fas fa-trophy"></i></div>
+                    <h3 class="text-2xl font-bold mb-2 text-gray-800 dark:text-white">Kuis Selesai!</h3>
+                    <p class="text-gray-500 dark:text-gray-400">Skor Akhir Anda:</p>
+                    <div class="text-7xl font-mono font-extrabold my-8 text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-cyan drop-shadow-lg" id="final-score">100</div>
+                    <div id="badge-container" class="mb-10 text-lg font-bold flex flex-col items-center gap-2 bg-gray-100 dark:bg-white/5 py-4 rounded-xl border border-gray-200 dark:border-white/10 shadow-inner w-full max-w-sm mx-auto">
+                    </div>
+                    <button onclick="resetQuiz()" class="px-8 py-3 rounded-full border-2 border-brand-cyan text-brand-cyan hover:bg-brand-cyan hover:text-white dark:hover:text-gray-900 hover:shadow-[0_0_15px_rgba(0,242,254,0.5)] transition-all text-sm font-bold uppercase tracking-wider"><i class="fas fa-redo mr-2"></i> Ulangi Kuis</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SLIDE 13: KESIMPULAN -->
+        <section class="slide" data-title="Kesimpulan">
+            <div class="slide-title-wrapper">
+                <h2 class="slide-title">Kesimpulan</h2>
+            </div>
+            
+            <div class="w-full max-w-4xl glass-card p-12 text-center flex flex-col md:flex-row gap-6 justify-center items-stretch relative z-10 shadow-2xl">
+                <div class="flex-1 bg-white/60 dark:bg-black/30 p-6 rounded-2xl border border-gray-200 dark:border-white/10 shadow-sm flex flex-col justify-center transform hover:scale-105 transition group">
+                    <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 text-blue-500 rounded-full flex items-center justify-center mx-auto mb-4 text-xl group-hover:bg-blue-500 group-hover:text-white transition"><i class="fas fa-water"></i></div>
+                    <strong class="text-gray-800 dark:text-white block text-xl mb-2">Arrhenius</strong>
+                    <span class="text-sm font-medium text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-white/5 py-1 px-2 rounded">H⁺ / OH⁻ dalam air</span>
+                </div>
+                
+                <div class="text-gray-300 dark:text-gray-600 hidden md:flex items-center text-3xl font-light">+</div>
+                
+                <div class="flex-1 bg-white/60 dark:bg-black/30 p-6 rounded-2xl border border-gray-200 dark:border-white/10 shadow-sm flex flex-col justify-center transform hover:scale-105 transition group">
+                    <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4 text-xl group-hover:bg-emerald-500 group-hover:text-white transition"><i class="fas fa-exchange-alt"></i></div>
+                    <strong class="text-gray-800 dark:text-white block text-xl mb-2">Brønsted-Lowry</strong>
+                    <span class="text-sm font-medium text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-white/5 py-1 px-2 rounded">Transfer Proton (H⁺)</span>
+                </div>
+                
+                <div class="text-gray-300 dark:text-gray-600 hidden md:flex items-center text-3xl font-light">+</div>
+                
+                <div class="flex-1 bg-white/60 dark:bg-black/30 p-6 rounded-2xl border border-gray-200 dark:border-white/10 shadow-sm flex flex-col justify-center transform hover:scale-105 transition group">
+                    <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 text-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 text-xl group-hover:bg-purple-500 group-hover:text-white transition"><i class="fas fa-atom"></i></div>
+                    <strong class="text-gray-800 dark:text-white block text-xl mb-2">Lewis</strong>
+                    <span class="text-sm font-medium text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-white/5 py-1 px-2 rounded">Transfer Psgn Elektron</span>
+                </div>
+            </div>
+
+            <div class="mt-12 p-6 max-w-3xl text-center relative z-10">
+                <div class="text-4xl text-brand-cyan opacity-50 mb-2"><i class="fas fa-quote-left"></i></div>
+                <p class="font-medium italic text-xl md:text-2xl leading-relaxed text-gray-700 dark:text-gray-200 drop-shadow-sm">
+                    Ketiga teori saling <strong class="text-brand-blue dark:text-brand-cyan text-glow">melengkapi</strong> dalam menjelaskan perilaku asam dan basa pada berbagai kondisi sistem.
+                </p>
+            </div>
+        </section>
+
+        <!-- SLIDE 14: PENUTUP -->
+        <section class="slide" data-title="Penutup">
+            <div class="text-center w-full max-w-3xl relative z-10">
+                <div class="mb-8">
+                    <i class="fas fa-graduation-cap text-6xl text-brand-emerald drop-shadow-lg"></i>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-heading font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-cyan drop-shadow tracking-widest uppercase text-glow">THANK YOU</h1>
+                
+                <p class="text-lg md:text-2xl text-gray-700 dark:text-gray-300 mb-14 italic font-medium bg-white/50 dark:bg-black/30 p-6 rounded-2xl backdrop-blur shadow-inner border border-gray-200 dark:border-white/10">
+                    "Kimia menjadi lebih mudah ketika kita dapat melihat bagaimana partikel berinteraksi."
+                </p>
+                
+                <div class="inline-block glass-card p-6 px-10 text-center mb-14 border-t-4 border-t-brand-blue dark:border-t-brand-cyan">
+                    <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">Rafli Hutauruk</h2>
+                    <p class="font-mono text-base font-bold text-brand-blue dark:text-brand-cyan mb-1 bg-blue-50 dark:bg-blue-900/30 inline-block px-3 py-1 rounded">NIM 4243131099</p>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400 mt-2"><i class="fas fa-university mr-2"></i>Pendidikan Kimia</p>
+                </div>
+                
+                <br>
+                <button onclick="goToSlide(0)" class="px-8 py-4 rounded-full bg-gray-800 dark:bg-white text-white dark:text-gray-900 hover:shadow-xl transition-all flex items-center justify-center gap-3 mx-auto text-sm font-bold uppercase tracking-wider transform hover:scale-105">
+                    <i class="fas fa-redo animate-spin-hover"></i> Ulangi Presentasi
+                </button>
+                <style>
+                    button:hover .animate-spin-hover { transform: rotate(180deg); transition: transform 0.3s; }
+                    .animate-spin-hover { transition: transform 0.3s; }
+                </style>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // 1. CORE LOGIC
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const progressBar = document.getElementById('progress-bar');
+        const indicator = document.getElementById('slide-indicator');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const slideWrapper = document.getElementById('slides-wrapper');
+
+        function updateUI() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active', 'prev');
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                } else if (index < currentSlide) {
+                    slide.classList.add('prev');
+                }
+            });
+
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            progressBar.style.width = `${progress}%`;
+            indicator.innerText = `${String(currentSlide + 1).padStart(2, '0')} / ${totalSlides}`;
+
+            btnPrev.disabled = currentSlide === 0;
+            if(currentSlide === totalSlides - 1) {
+                btnNext.style.display = 'none';
+            } else {
+                btnNext.style.display = 'flex';
+            }
+
+            if(currentSlide > 0) playTone(400, 'triangle', 0.05);
+
+            triggerSlideSpecificLogic(currentSlide);
+            updateMenuHighlight();
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateUI();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateUI();
+            }
+        }
+
+        function goToSlide(index) {
+            if (index >= 0 && index < totalSlides) {
+                currentSlide = index;
+                updateUI();
+                closeMenu();
+            }
+        }
+
+        btnNext.addEventListener('click', () => { playClick(); nextSlide(); });
+        btnPrev.addEventListener('click', () => { playClick(); prevSlide(); });
+        document.getElementById('btn-home').addEventListener('click', () => { playClick(); goToSlide(0); });
+        
+        document.querySelectorAll('.nav-next-btn').forEach(btn => {
+            btn.addEventListener('click', () => { playClick(); nextSlide(); });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'Escape') {
+                toggleMenu();
+            }
+        });
+
+        let touchStartX = 0;
+        let touchEndX = 0;
+        slideWrapper.addEventListener('touchstart', e => touchStartX = e.changedTouches[0].screenX, {passive: true});
+        slideWrapper.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            if (touchEndX < touchStartX - 50) nextSlide();
+            if (touchEndX > touchStartX + 50) prevSlide();
+        }, {passive: true});
+
+        // 2. MENU LOGIC & THEME TOGGLE
+        const navMenu = document.getElementById('nav-menu');
+        const navOverlay = document.getElementById('nav-overlay');
+        const menuList = document.getElementById('menu-list');
+
+        function toggleMenu() {
+            navMenu.classList.contains('open') ? closeMenu() : openMenu();
+        }
+
+        function openMenu() {
+            playClick();
+            navMenu.classList.add('open');
+            navOverlay.classList.remove('hidden');
+            setTimeout(() => navOverlay.style.opacity = '1', 10);
+        }
+
+        function closeMenu() {
+            navMenu.classList.remove('open');
+            navOverlay.style.opacity = '0';
+            setTimeout(() => navOverlay.classList.add('hidden'), 300);
+        }
+
+        document.getElementById('btn-menu').addEventListener('click', toggleMenu);
+        document.getElementById('btn-close-menu').addEventListener('click', closeMenu);
+        navOverlay.addEventListener('click', closeMenu);
+
+        // Populate menu based on data-title
+        slides.forEach((slide, index) => {
+            const title = slide.getAttribute('data-title');
+            if(title) {
+                const li = document.createElement('li');
+                li.innerHTML = `<button class="w-full text-left py-2 px-4 rounded hover:bg-gray-100 dark:hover:bg-white/10 transition font-bold"><i class="fas fa-chevron-right text-xs mr-2 text-gray-400"></i> ${title}</button>`;
+                li.querySelector('button').addEventListener('click', () => goToSlide(index));
+                menuList.appendChild(li);
+            }
+        });
+
+        function updateMenuHighlight() {
+            const buttons = menuList.querySelectorAll('button');
+            buttons.forEach((btn, idx) => {
+                if(idx === currentSlide) {
+                    btn.classList.add('text-brand-blue', 'dark:text-brand-cyan', 'bg-blue-50', 'dark:bg-blue-900/20');
+                    btn.classList.remove('text-gray-600', 'dark:text-gray-300');
+                    btn.querySelector('i').classList.replace('fa-chevron-right', 'fa-circle');
+                    btn.querySelector('i').classList.add('text-[8px]', 'align-middle', 'text-brand-blue', 'dark:text-brand-cyan');
+                } else {
+                    btn.classList.remove('text-brand-blue', 'dark:text-brand-cyan', 'bg-blue-50', 'dark:bg-blue-900/20');
+                    btn.classList.add('text-gray-600', 'dark:text-gray-300');
+                    btn.querySelector('i').classList.replace('fa-circle', 'fa-chevron-right');
+                    btn.querySelector('i').classList.remove('text-[8px]', 'align-middle', 'text-brand-blue', 'dark:text-brand-cyan');
+                }
+            });
+        }
+
+        // Theme Toggle (Light/Dark Mode)
+        const btnTheme = document.getElementById('btn-theme');
+        const htmlElement = document.documentElement;
+        
+        function toggleTheme() {
+            playClick();
+            if (htmlElement.classList.contains('dark')) {
+                htmlElement.classList.remove('dark');
+                btnTheme.innerHTML = '<i class="fas fa-sun text-yellow-500"></i>';
+                localStorage.setItem('theme', 'light');
+            } else {
+                htmlElement.classList.add('dark');
+                btnTheme.innerHTML = '<i class="fas fa-moon text-blue-300"></i>';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+        
+        btnTheme.addEventListener('click', toggleTheme);
+        
+        // Initialize theme based on preference or default to dark (setelan awal)
+        if (localStorage.getItem('theme') === 'light') {
+            htmlElement.classList.remove('dark');
+            btnTheme.innerHTML = '<i class="fas fa-sun text-yellow-500"></i>';
+        } else {
+            // Default is dark mode per original design
+            htmlElement.classList.add('dark');
+            btnTheme.innerHTML = '<i class="fas fa-moon text-blue-300"></i>';
+        }
+
+        // 3. SOUND LOGIC
+        let isMuted = false;
+        let audioCtx = null;
+
+        function initAudio() {
+            if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+
+        document.getElementById('btn-sound').addEventListener('click', () => {
+            initAudio();
+            isMuted = !isMuted;
+            const icon = document.querySelector('#btn-sound i');
+            icon.className = isMuted ? 'fas fa-volume-mute text-red-500' : 'fas fa-volume-up text-gray-700 dark:text-gray-300';
+        });
+
+        function playTone(freq, type, duration) {
+            if (isMuted) return;
+            initAudio();
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime); 
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.stop(audioCtx.currentTime + duration);
+            } catch(e) {} 
+        }
+
+        function playClick() { playTone(600, 'sine', 0.05); }
+        function playSuccess() { if(!isMuted){ playTone(500, 'square', 0.1); setTimeout(() => playTone(800, 'square', 0.15), 100); } }
+        function playFail() { if(!isMuted){ playTone(300, 'sawtooth', 0.2); setTimeout(() => playTone(200, 'sawtooth', 0.3), 150); } }
+
+        // 4. PARTICLES & SPECIFICS
+        function showStaticParticles(btnElement, type, color) {
+            const rect = btnElement.getBoundingClientRect();
+            for(let i=0; i<6; i++) { 
+                const p = document.createElement('div');
+                p.innerText = type;
+                p.style.position = 'fixed';
+                p.style.left = (rect.left + rect.width/2) + 'px';
+                p.style.top = (rect.top + rect.height/2) + 'px';
+                p.style.color = color;
+                p.style.fontWeight = '900';
+                p.style.fontSize = '1.5rem';
+                p.style.zIndex = '5';
+                p.style.pointerEvents = 'none';
+                p.style.transition = 'all 1s ease-out';
+                p.style.textShadow = `0 0 10px ${color}`;
+                document.body.appendChild(p);
+
+                setTimeout(() => {
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = 50 + Math.random() * 80;
+                    p.style.transform = `translate(${Math.cos(angle)*distance}px, ${Math.sin(angle)*distance - 80}px) scale(1.5)`;
+                    p.style.opacity = '0';
+                }, 10);
+                setTimeout(() => p.remove(), 1000);
+            }
+        }
+
+        function triggerSlideSpecificLogic(index) {
+            if(index !== 9 && labAnimationId) cancelAnimationFrame(labAnimationId);
+            if(index === 9 && !labInitialized) initLabSimulation();
+        }
+
+        // 5. BACKGROUND CANVAS PARTICLES (Futuristic Glow Style)
+        const bgCanvas = document.getElementById('bg-particles');
+        const bgCtx = bgCanvas.getContext('2d');
+        let bgParticlesArray = [];
+
+        function initBgParticles() {
+            bgCanvas.width = window.innerWidth;
+            bgCanvas.height = window.innerHeight;
+            bgParticlesArray = [];
+            const numParticles = window.innerWidth < 768 ? 20 : 40; 
+            for (let i = 0; i < numParticles; i++) {
+                const type = Math.random() > 0.5 ? 'H⁺' : 'OH⁻';
+                bgParticlesArray.push(new BgParticle(type));
+            }
+        }
+
+        class BgParticle {
+            constructor(type) {
+                this.type = type;
+                this.x = Math.random() * bgCanvas.width;
+                this.y = Math.random() * bgCanvas.height;
+                this.speedY = (Math.random() * 0.5 + 0.1); 
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 10 + 10; 
+                this.opacity = Math.random() * 0.3 + 0.1; 
+            }
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+                if (this.y > bgCanvas.height + 20) {
+                    this.y = -20;
+                    this.x = Math.random() * bgCanvas.width;
+                }
+            }
+            draw() {
+                const isDark = document.documentElement.classList.contains('dark');
+                // Adjust opacity and color based on theme
+                bgCtx.globalAlpha = isDark ? this.opacity : this.opacity * 0.5;
+                
+                if (isDark) {
+                    bgCtx.fillStyle = this.type === 'H⁺' ? '#00f2fe' : '#10b981';
+                    bgCtx.shadowBlur = 10;
+                    bgCtx.shadowColor = bgCtx.fillStyle;
+                } else {
+                    bgCtx.fillStyle = this.type === 'H⁺' ? '#3b82f6' : '#059669';
+                    bgCtx.shadowBlur = 0;
+                }
+                
+                bgCtx.font = `800 ${this.size}px sans-serif`;
+                bgCtx.fillText(this.type, this.x, this.y);
+                bgCtx.shadowBlur = 0; // reset for next drawing
+            }
+        }
+
+        function animateBgParticles() {
+            bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+            for (let i = 0; i < bgParticlesArray.length; i++) {
+                bgParticlesArray[i].update();
+                bgParticlesArray[i].draw();
+            }
+            requestAnimationFrame(animateBgParticles);
+        }
+
+        window.addEventListener('resize', () => {
+            initBgParticles();
+            if(labInitialized && currentSlide === 9) resizeLabCanvas();
+        });
+        
+        initBgParticles();
+        animateBgParticles();
+
+        // 6. MINI LAB SIMULASI INTERAKTIF
+        const labCanvas = document.getElementById('lab-canvas');
+        let labCtx = null;
+        let labParticles = [];
+        let labAnimationId;
+        let labInitialized = false;
+        let currentLabReaction = null;
+        let labIsPlaying = false;
+
+        function resizeLabCanvas() {
+            const rect = labCanvas.parentElement.getBoundingClientRect();
+            labCanvas.width = rect.width;
+            labCanvas.height = rect.height;
+        }
+
+        function initLabSimulation() {
+            if(labInitialized) return;
+            labCtx = labCanvas.getContext('2d');
+            resizeLabCanvas();
+            labInitialized = true;
+
+            const btns = document.querySelectorAll('.lab-btn');
+            btns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    playClick();
+                    btns.forEach(b => {
+                        b.classList.remove('bg-blue-50', 'dark:bg-blue-900/30', 'border-blue-200', 'dark:border-blue-500/50');
+                        b.querySelector('i').classList.remove('text-brand-blue', 'dark:text-brand-cyan');
+                    });
+                    btn.classList.add('bg-blue-50', 'dark:bg-blue-900/30', 'border-blue-200', 'dark:border-blue-500/50');
+                    btn.querySelector('i').classList.add('text-brand-blue', 'dark:text-brand-cyan');
+                    
+                    currentLabReaction = btn.getAttribute('data-type');
+                    document.getElementById('lab-status').innerText = `Zat: ${btn.querySelector('span').innerText}`;
+                    resetLab();
+                });
+            });
+
+            document.getElementById('btn-lab-play').addEventListener('click', () => {
+                playClick();
+                if(!currentLabReaction) {
+                    const status = document.getElementById('lab-status');
+                    status.innerText = "PILIH ZAT TERLEBIH DAHULU!";
+                    status.classList.add('text-red-500');
+                    setTimeout(() => status.classList.remove('text-red-500'), 1500);
+                    return;
+                }
+                labIsPlaying = true;
+                startLabReaction();
+            });
+
+            document.getElementById('btn-lab-reset').addEventListener('click', () => {
+                playClick();
+                resetLab();
+            });
+            
+            function labLoop() {
+                if(currentSlide === 9) drawLab();
+                labAnimationId = requestAnimationFrame(labLoop);
+            }
+            labLoop();
+        }
+
+        function resetLab() {
+            labIsPlaying = false;
+            labParticles = [];
+            if(currentLabReaction) {
+                const count = window.innerWidth < 768 ? 20 : 30;
+                for(let i=0; i<count; i++) {
+                    labParticles.push({
+                        x: labCanvas.width * 0.2 + Math.random() * (labCanvas.width * 0.6),
+                        y: labCanvas.height * 0.3 + Math.random() * (labCanvas.height * 0.5),
+                        vx: (Math.random() - 0.5) * 1.5,
+                        vy: (Math.random() - 0.5) * 1.5,
+                        type: currentLabReaction,
+                        dissociated: false
+                    });
+                }
+            }
+        }
+
+        function startLabReaction() {
+            labParticles.forEach(p => {
+                if(currentLabReaction === 'strong-acid' || currentLabReaction === 'strong-base') {
+                    p.dissociated = true; // Terionisasi sempurna
+                } else {
+                    if(Math.random() < 0.2) p.dissociated = true; // Terionisasi sebagian (lemah)
+                }
+            });
+        }
+
+        function drawLab() {
+            labCtx.clearRect(0, 0, labCanvas.width, labCanvas.height);
+            const isDark = document.documentElement.classList.contains('dark');
+            
+            labParticles.forEach(p => {
+                if(labIsPlaying) {
+                    p.x += p.vx; p.y += p.vy;
+                    const bw = labCanvas.width, bh = labCanvas.height;
+                    // Bouncing inside beaker roughly
+                    if(p.x < bw * 0.2 || p.x > bw * 0.8) p.vx *= -1;
+                    if(p.y < bh * 0.25 || p.y > bh * 0.85) p.vy *= -1;
+                    
+                    // Add random jitter
+                    p.vx += (Math.random() - 0.5) * 0.3;
+                    p.vy += (Math.random() - 0.5) * 0.3;
+                    
+                    // Cap speed
+                    const maxSpeed = 1.5;
+                    if(p.vx > maxSpeed) p.vx = maxSpeed; if(p.vx < -maxSpeed) p.vx = -maxSpeed;
+                    if(p.vy > maxSpeed) p.vy = maxSpeed; if(p.vy < -maxSpeed) p.vy = -maxSpeed;
+                }
+
+                labCtx.font = "bold 14px monospace";
+                labCtx.textAlign = "center";
+                labCtx.textBaseline = "middle";
+
+                if(!p.dissociated) {
+                    labCtx.fillStyle = isDark ? "#cbd5e1" : "#475569"; // Molekul utuh
+                    labCtx.shadowBlur = 0;
+                    let text = "";
+                    if(p.type === 'strong-acid') text = "HCl";
+                    if(p.type === 'weak-acid') text = "CH₃COOH";
+                    if(p.type === 'strong-base') text = "NaOH";
+                    if(p.type === 'weak-base') text = "NH₃";
+                    labCtx.fillText(text, p.x, p.y);
+                } else {
+                    let ion1, ion2, col1, col2;
+                    if(p.type === 'strong-acid') { ion1="H⁺"; col1=isDark?"#00f2fe":"#3b82f6"; ion2="Cl⁻"; col2=isDark?"#94a3b8":"#64748b"; }
+                    if(p.type === 'weak-acid')   { ion1="H⁺"; col1=isDark?"#00f2fe":"#3b82f6"; ion2="CH₃COO⁻"; col2=isDark?"#94a3b8":"#64748b"; }
+                    if(p.type === 'strong-base') { ion1="Na⁺"; col1=isDark?"#94a3b8":"#64748b"; ion2="OH⁻"; col2=isDark?"#10b981":"#059669"; }
+                    if(p.type === 'weak-base')   { ion1="NH₄⁺"; col1=isDark?"#94a3b8":"#64748b"; ion2="OH⁻"; col2=isDark?"#10b981":"#059669"; }
+
+                    if(isDark) labCtx.shadowBlur = 8;
+                    
+                    labCtx.fillStyle = col1; 
+                    labCtx.shadowColor = col1;
+                    labCtx.fillText(ion1, p.x - 12, p.y - 12);
+                    
+                    labCtx.fillStyle = col2; 
+                    labCtx.shadowColor = col2;
+                    labCtx.fillText(ion2, p.x + 12, p.y + 12);
+                    
+                    labCtx.shadowBlur = 0;
+                }
+            });
+        }
+
+        // 7. QUIZ LOGIC 
+        const quizData = [
+            {
+                q: "1. Menurut Arrhenius, basa adalah zat yang...",
+                options: ["A. Menerima proton dalam reaksi", "B. Menghasilkan ion OH⁻ dalam air", "C. Menerima pasangan elektron", "D. Mendonorkan ion H⁺"],
+                correct: 1,
+                exp: "Arrhenius secara spesifik mendefinisikan basa sebagai spesi yang melepaskan/meningkatkan konsentrasi ion hidroksida (OH⁻) di dalam air."
+            },
+            {
+                q: "2. Teori Brønsted-Lowry mendefinisikan ASAM sebagai...",
+                options: ["A. Akseptor proton (Penerima H⁺)", "B. Donor pasangan elektron", "C. Donor proton (Pemberi H⁺)", "D. Penghasil ion OH⁻"],
+                correct: 2,
+                exp: "Brønsted-Lowry berfokus pada transfer proton. Asam adalah spesi pendonor (pemberi) proton (H⁺)."
+            },
+            {
+                q: "3. Pada reaksi: NH₃ + BF₃ → NH₃-BF₃. Senyawa BF₃ bertindak sebagai...",
+                options: ["A. Asam Arrhenius", "B. Basa Lewis", "C. Asam Lewis", "D. Basa Brønsted-Lowry"],
+                correct: 2,
+                exp: "BF₃ menerima pasangan elektron bebas dari NH₃. Penerima pasangan elektron disebut Asam Lewis."
+            },
+            {
+                q: "4. Spesi manakah yang merupakan Basa Konjugasi dari H₂O?",
+                options: ["A. H₃O⁺", "B. H⁺", "C. O²⁻", "D. OH⁻"],
+                correct: 3,
+                exp: "Basa konjugasi terbentuk ketika asam melepaskan satu proton (H⁺). H₂O melepaskan H⁺ menjadi OH⁻."
+            },
+            {
+                q: "5. Suatu larutan memiliki konsentrasi [H⁺] yang sangat tinggi. Dapat dipastikan sifat larutan tersebut...",
+                options: ["A. Sangat Asam (pH rendah)", "B. Netral (pH 7)", "C. Sangat Basa (pH tinggi)", "D. Tidak dapat ditentukan"],
+                correct: 0,
+                exp: "Konsentrasi ion H⁺ yang tinggi mengindikasikan sifat asam kuat, yang berarti nilai pH-nya mendekati angka 0."
+            }
+        ];
+
+        let currentQ = 0;
+        let score = 0;
+        
+        const qStart = document.getElementById('quiz-start');
+        const qScreen = document.getElementById('quiz-question');
+        const qEnd = document.getElementById('quiz-end');
+        const qFeedback = document.getElementById('quiz-feedback');
+        
+        function startQuiz() {
+            playClick();
+            currentQ = 0; score = 0;
+            qStart.classList.add('hidden'); qEnd.classList.add('hidden'); qScreen.classList.remove('hidden');
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const q = quizData[currentQ];
+            document.getElementById('q-counter').innerText = `Soal ${currentQ + 1}/${quizData.length}`;
+            document.getElementById('q-score-live').innerText = `Skor: ${score}`;
+            document.getElementById('q-text').innerText = q.q;
+            
+            const optContainer = document.getElementById('q-options');
+            optContainer.innerHTML = '';
+            
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 rounded-xl bg-white/60 dark:bg-black/30 hover:bg-blue-50 dark:hover:bg-blue-900/30 border border-gray-200 dark:border-white/10 hover:border-brand-blue dark:hover:border-brand-cyan transition-all text-sm font-bold text-gray-700 dark:text-gray-200 shadow-sm";
+                btn.innerText = opt;
+                btn.onclick = () => checkAnswer(idx);
+                optContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIdx) {
+            const q = quizData[currentQ];
+            const isCorrect = selectedIdx === q.correct;
+            
+            qFeedback.classList.remove('hidden');
+            
+            if(isCorrect) {
+                playSuccess();
+                score += 20; 
+                document.getElementById('fb-icon').innerHTML = '<i class="fas fa-check-circle"></i>';
+                document.getElementById('fb-icon').className = 'text-6xl mb-6 text-brand-emerald animate-bounce drop-shadow-[0_0_15px_rgba(16,185,129,0.5)]';
+                document.getElementById('fb-title').innerText = 'Tepat Sekali!';
+                document.getElementById('fb-title').className = 'text-3xl font-extrabold mb-4 text-brand-emerald';
+                document.getElementById('q-score-live').innerText = `Skor: ${score}`;
+            } else {
+                playFail();
+                document.getElementById('fb-icon').innerHTML = '<i class="fas fa-times-circle"></i>';
+                document.getElementById('fb-icon').className = 'text-6xl mb-6 text-red-500 animate-pulse drop-shadow-[0_0_15px_rgba(239,68,68,0.5)]';
+                document.getElementById('fb-title').innerText = 'Kurang Tepat';
+                document.getElementById('fb-title').className = 'text-3xl font-extrabold mb-4 text-red-500';
+            }
+            
+            document.getElementById('fb-desc').innerText = q.exp;
+        }
+
+        function nextQuestion() {
+            playClick();
+            qFeedback.classList.add('hidden');
+            currentQ++;
+            if(currentQ < quizData.length) loadQuestion(); else finishQuiz();
+        }
+
+        function finishQuiz() {
+            qScreen.classList.add('hidden');
+            qEnd.classList.remove('hidden');
+            
+            const scoreEl = document.getElementById('final-score');
+            let currentDisplay = 0;
+            const interval = setInterval(() => {
+                currentDisplay += 2;
+                scoreEl.innerText = currentDisplay;
+                if(currentDisplay >= score) {
+                    clearInterval(interval);
+                    scoreEl.innerText = score;
+                }
+            }, 20);
+
+            const badgeC = document.getElementById('badge-container');
+            if(score === 100) {
+                badgeC.innerHTML = '<div class="text-4xl text-yellow-400 mb-2 drop-shadow-[0_0_10px_rgba(250,204,21,0.8)]"><i class="fas fa-crown"></i></div><span class="text-brand-cyan">Master Asam-Basa</span>';
+            } else if (score >= 60) {
+                badgeC.innerHTML = '<div class="text-4xl text-gray-400 mb-2"><i class="fas fa-medal"></i></div><span class="text-gray-800 dark:text-gray-200">Pemahaman Baik</span>';
+            } else {
+                badgeC.innerHTML = '<div class="text-4xl text-red-400 mb-2"><i class="fas fa-book-open"></i></div><span class="text-red-500">Perlu Review Materi</span>';
+            }
+        }
+
+        function resetQuiz() {
+            playClick();
+            qEnd.classList.add('hidden');
+            qStart.classList.remove('hidden');
+        }
+
+        window.addEventListener('load', () => updateUI());
+    </script>
+</body>
+</html>
